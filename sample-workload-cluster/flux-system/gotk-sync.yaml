@@ -11,7 +11,7 @@ spec:
     branch: main
   secretRef:
     name: flux-system
-  url: https://github.com/Cheng-Ian-Liu/eks-a-workload-gitops.git
+  url: https://github.com/AWS-Demo-User/eks-a-workload-gitops.git
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
