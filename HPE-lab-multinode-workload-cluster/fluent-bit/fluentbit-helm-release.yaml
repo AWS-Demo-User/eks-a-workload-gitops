@@ -1,0 +1,76 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: fluent-bit-release
+  namespace: fluent-bit
+spec:
+  chart:
+    spec:
+      chart: fluent-bit
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: fluent-bit-repo
+      version: 0.46.10
+  interval: 1m0s
+  releaseName: fluent-bit-release
+  values:
+    config:
+      filters: "[FILTER]\n    Name                kubernetes\n    Match               kube.*\n
+        \   Kube_URL            https://kubernetes.default.svc:443\n    Kube_CA_File
+        \       /var/run/secrets/kubernetes.io/serviceaccount/ca.crt\n    Kube_Token_File
+        \    /var/run/secrets/kubernetes.io/serviceaccount/token\n    Kube_Tag_Prefix
+        \    kube.var.log.containers.\n    Merge_Log           On\n    Merge_Log_Key
+        \      log\n    Keep_Log            On\n    K8S-Logging.Parser  On\n    K8S-Logging.Exclude
+        On\n    Annotations         Off\n    Labels              Off\n\n[FILTER]\n
+        \   Name                modify\n    Match               *\n    Add                 cluster_name
+        eksa-gitops-workload-multinode \n    Add                 node_name ${HOSTNAME}\n"
+      inputs: |
+        [INPUT]
+            Name              tail
+            Tag               kube.*
+            Path              /var/log/containers/*.log
+            Parser            docker
+            DB                /var/log/flb_kube.db
+            Mem_Buf_Limit     5MB
+            Skip_Long_Lines   On
+            Refresh_Interval  10
+
+        [INPUT]
+            Name              tail
+            Tag               log.*
+            Path              /var/log/*.log
+            Parser            docker
+            DB                /var/log/flb_log.db
+            Mem_Buf_Limit     5MB
+            Skip_Long_Lines   On
+            Refresh_Interval  10
+            Rotate_Wait       5
+      outputs: |
+        [OUTPUT]
+            Name            http
+            Match           *
+            Host            172.16.45.2
+            Port            2021
+            URI             /log/ingest
+            Format          json
+            Retry_Limit     3 # Set a retry limit to handle transient failures
+      service: |
+        [SERVICE]
+            Flush        1
+            Log_Level    info
+            Daemon       off
+            # Parsers_File parsers.conf
+            HTTP_Server  On
+            HTTP_Listen  0.0.0.0
+            HTTP_Port    2020
+    daemonSet:
+      enabled: true
+    metrics:
+      enabled: false
+    networkPolicy:
+      enabled: false
+  # optionally add this field below to decouple Helm sync status from pod deployment status
+  install:
+    disableWait: true
