@@ -1,9 +1,0 @@
----
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: HelmRepository
-metadata:
-  name: oaihelmrepo
-  namespace: default
-spec:
-  interval: 10m0s
-  url: https://aws-demo-user.github.io/oai-helm-repo
