@@ -9,3 +9,5 @@ spec:
   ref:
     branch: main
   url: https://github.com/AWS-Demo-User/radisys-helm-repo
+  secretRef:
+    name: private-repo-credentials
