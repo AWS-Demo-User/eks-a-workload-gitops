@@ -12,6 +12,6 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: oaihelmrepo
-      version: 0.1.0
+      version: 0.2.0
   interval: 1m0s
   releaseName: oaichartrelease
