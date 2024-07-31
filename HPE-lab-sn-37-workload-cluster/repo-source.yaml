@@ -8,7 +8,7 @@ spec:
   interval: 1m0s
   ref:
     branch: main
-  url: https://github.com/AWS-Demo-User/radisys-helm-repo
+  url: https://github.com/AWS-Demo-User/radisys-helm-repo/U37
   secretRef:
     name: private-repo-credentials
 
