@@ -15,7 +15,5 @@ spec:
       restartPolicy: Never
       volumes:
       - name: scripts
-        gitRepo:
-          repository: https://github.com/AWS-Demo-User/eks-a-workload-gitops.git
-          revision: main
-          directory: HPE-lab-sn-37-workload-cluster
+        configMap:
+          name: pre-requisite-script
