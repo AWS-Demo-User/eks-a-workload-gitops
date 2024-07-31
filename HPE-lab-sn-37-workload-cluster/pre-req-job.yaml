@@ -1,0 +1,21 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: pre-requisite-job
+spec:
+  template:
+    spec:
+      containers:
+      - name: pre-requisite
+        image: ubuntu:latest
+        command: ["/bin/bash", "-c", "/scripts/pre-requisite.sh"]
+        volumeMounts:
+        - name: scripts
+          mountPath: /scripts
+      restartPolicy: Never
+      volumes:
+      - name: scripts
+        gitRepo:
+          repository: https://github.com/AWS-Demo-User/eks-a-workload-gitops.git
+          revision: main
+          directory: HPE-lab-sn-37-workload-cluster
