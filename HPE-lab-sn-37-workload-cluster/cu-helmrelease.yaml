@@ -1,0 +1,15 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: cu
+  namespace: default
+spec:
+  chart:
+    spec:
+      chart: ./U37/cu/
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: GitRepository
+        name: radisys-helm-repo
+  interval: 1m0s
