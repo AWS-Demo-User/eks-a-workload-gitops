@@ -2,6 +2,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: pre-requisite-job
+  namespace: flux-system
 spec:
   template:
     spec:
