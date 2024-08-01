@@ -12,7 +12,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: prometheus-repo
-      version: 25.22.0
+      version: 25.21.0
   interval: 1m0s
   releaseName: prometheus-release
   values:
