@@ -20,7 +20,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m0s
-  path: ./HPE-lab-sn-37-workload-cluster
+  path: ./HPE-lab-sn-35-workload-cluster
   prune: true
   sourceRef:
     kind: GitRepository
